@@ -1,5 +1,6 @@
 package com.example.alessandroghilardi.silentor;
 
+import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
@@ -19,11 +20,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class GpsService extends Service {
+public class GpsService extends IntentService {
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) { return null; }
     private DatabaseHelper dbHelper;
     private ArrayList<PinItem> pinItems;
 
@@ -32,19 +30,29 @@ public class GpsService extends Service {
     public long LOCATION_REFRESH_DISTANCE = 0;
     public AudioManager am;
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) { return null; }
+
+    @Override
+    public void onHandleIntent(Intent intent){}
+
+    public GpsService(){
+        super("SilentorGPS");
+    }
+
     private final LocationListener mLocationListener = new LocationListener() {
 
         @Override
         public void onLocationChanged(final Location location) {
 
+            pinItems = new ArrayList<>();
+            pinItems.addAll(dbHelper.getAllItems());
+
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
 
             am = (AudioManager) getSystemService(AUDIO_SERVICE);
-
-            Location pinLocation = location;
-            pinLocation.setLatitude(37);
-            pinLocation.setLongitude(-122);
 
             int radius = 1000;
             NotificationManager n = (NotificationManager) getApplicationContext()
@@ -54,18 +62,32 @@ public class GpsService extends Service {
 
             if(n.isNotificationPolicyAccessGranted()) {
 
-                for(int i = 0; i < pinItems.size(); i++) {
+                if(pinItems.size() == 0){
+                    am.setRingerMode(2);
+                }else {
 
-                    pinLocation.setLongitude(pinItems.get(i).getLongitude());
-                    pinLocation.setLatitude(pinItems.get(i).getLatitude());
+                    for (int i = 0; i < pinItems.size(); i++) {
 
-                    if ((pinLocation.getLongitude() - longitude) * (pinLocation.getLongitude() - longitude) +
-                            (pinLocation.getLatitude() - latitude) * (pinLocation.getLatitude() - latitude) <= radius * radius) {
-                        // set silent mode
+                        double earthRadius = 6371000; //meters
+                        double dLat = Math.toRadians(pinItems.get(i).getLatitude()-location.getLatitude());
+                        double dLng = Math.toRadians(pinItems.get(i).getLongitude()-location.getLongitude());
 
-                        am.setRingerMode(0);
-                    } else {
-                        am.setRingerMode(2);
+                        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                                Math.cos(Math.toRadians(location.getLatitude())) *
+                                        Math.cos(Math.toRadians(pinItems.get(i).getLatitude())) *
+                                        Math.sin(dLng/2) * Math.sin(dLng/2);
+
+                        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        float dist = (float) (earthRadius * c);
+
+
+                        if (dist < 100) {
+                            // set silent mode
+                            am.setRingerMode(0);
+                            break;
+                        } else {
+                            am.setRingerMode(2);
+                        }
                     }
                 }
             }
@@ -88,8 +110,7 @@ public class GpsService extends Service {
         Toast.makeText(this, "Service Created", Toast.LENGTH_LONG).show();
 
         dbHelper = new DatabaseHelper(this);
-        pinItems = new ArrayList<>();
-        pinItems.addAll(dbHelper.getAllItems());
+
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION )
