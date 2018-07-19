@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 
 public class PinItem {
 
+    private String Name;
     private double Latitude;
     private double Longitude;
     private int id;
@@ -30,6 +31,8 @@ public class PinItem {
         return this.Longitude;
     }
 
+    public String getName(){ return this.Name; }
+
 
     public LatLng getCoordinates() {
         LatLng coordinates = new LatLng(this.Latitude,  this.Longitude);
@@ -43,6 +46,10 @@ public class PinItem {
     public void setCoordinates(LatLng coordinates) {
         this.Latitude = coordinates.latitude;
         this.Longitude = coordinates.longitude;
+    }
+
+    public void setName(String name){
+        this.Name = name;
     }
 
     public int getId() {

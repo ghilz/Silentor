@@ -23,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGITUDE = "longitude";
+    private static final String KEY_NAME = "name";
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -33,7 +34,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + TABLE_NAME + " ("
                 + KEY_ID + " integer primary key autoincrement, "
                 + KEY_LATITUDE + " FLOAT not null, "
-                + KEY_LONGITUDE+ " FLOAT not null"
+                + KEY_LONGITUDE+ " FLOAT not null,"
+                + KEY_NAME+ " TEXT "
                 + ");");
         Log.d(TAG, "onCreate(): create table");
     }
@@ -55,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_LATITUDE, item.getLatitude());
         values.put(KEY_LONGITUDE, item.getLongitude());
+        values.put(KEY_NAME, item.getName());
 
         long id = db.insert(TABLE_NAME,
                 null,
@@ -86,6 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 LatLng coordinates = new LatLng(latitude, longitude);
 
                 dbPin.setCoordinates(coordinates);
+                dbPin.setName(cursor.getString(3));
 
                 items.add(dbPin);      // Add item to items
             } while (cursor.moveToNext());

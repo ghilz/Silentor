@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.audiofx.Equalizer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -49,4 +50,11 @@ public class MainActivity extends AppCompatActivity {
         Intent it = new Intent(this, ManagerActivity.class);
         startActivity(it);
     }
+
+    public void managerSettings(View view) {
+        Intent it = new Intent(this, ManagerSettingsActivity.class);
+        startActivity(it);
+    }
+
+
 }

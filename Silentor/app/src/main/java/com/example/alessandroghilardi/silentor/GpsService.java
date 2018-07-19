@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -54,7 +55,11 @@ public class GpsService extends IntentService {
 
             am = (AudioManager) getSystemService(AUDIO_SERVICE);
 
-            int radius = 1000;
+            SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(
+                    getString(R.string.range_setting), MODE_PRIVATE);
+
+            int range = sharedPref.getInt(getString(R.string.range_setting), 100);
+
             NotificationManager n = (NotificationManager) getApplicationContext()
                     .getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -81,7 +86,7 @@ public class GpsService extends IntentService {
                         float dist = (float) (earthRadius * c);
 
 
-                        if (dist < 100) {
+                        if (dist < range) {
                             // set silent mode
                             am.setRingerMode(0);
                             break;

@@ -1,29 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnAddNewPin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="71dp"
-        android:layout_marginEnd="138dp"
-        android:layout_marginLeft="158dp"
-        android:layout_marginRight="138dp"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="112dp"
-        android:onClick="openMap"
-        android:text="Add New"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/btnListPin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <include layout="@layout/content_manage_new_pin" />
+
 
     <Button
         android:id="@+id/btnListPin"
@@ -39,6 +25,32 @@
         android:text="Manage Pins"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnAddNewPin" />
-</android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btnSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="232dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginLeft="158dp"
+        android:layout_marginRight="138dp"
+        android:layout_marginStart="158dp"
+        android:layout_marginTop="210dp"
+        android:onClick="managerSettings"
+        android:text="Settings" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:onClick="openMap"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+
+</android.support.design.widget.CoordinatorLayout>
