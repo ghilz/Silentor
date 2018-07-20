@@ -11,36 +11,26 @@
     <include layout="@layout/content_manage_new_pin" />
 
 
-    <Button
-        android:id="@+id/btnListPin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="232dp"
-        android:layout_marginEnd="138dp"
-        android:layout_marginLeft="158dp"
-        android:layout_marginRight="138dp"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="71dp"
-        android:onClick="manageAllPin"
-        android:text="Manage Pins"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAddNewPin" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="232dp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginLeft="158dp"
-        android:layout_marginRight="138dp"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="210dp"
-        android:onClick="managerSettings"
-        android:text="Settings" />
+        <Button
+            android:id="@+id/btnListPin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="manageAllPin"
+            android:text="Manage Pins" />
+
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="managerSettings"
+            android:text="Settings" />
+
+    </LinearLayout>
 
 
     <android.support.design.widget.FloatingActionButton
