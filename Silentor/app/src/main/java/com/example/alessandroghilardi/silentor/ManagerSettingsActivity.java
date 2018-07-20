@@ -37,6 +37,7 @@ public class ManagerSettingsActivity extends AppCompatActivity {
         SharedPreferences sharedPref = this.getSharedPreferences(
                 getString(R.string.range_setting), this.MODE_PRIVATE);
 
+        // set range
         sharedPref.edit().putInt(getString(R.string.range_setting), Integer.parseInt(newRange)).apply();
 
         finish();

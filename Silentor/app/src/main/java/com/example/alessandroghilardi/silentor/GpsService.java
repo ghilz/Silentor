@@ -55,6 +55,7 @@ public class GpsService extends IntentService {
 
             am = (AudioManager) getSystemService(AUDIO_SERVICE);
 
+            // get range settings
             SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(
                     getString(R.string.range_setting), MODE_PRIVATE);
 
@@ -67,6 +68,7 @@ public class GpsService extends IntentService {
 
             if(n.isNotificationPolicyAccessGranted()) {
 
+                // compare current position with stored pins
                 if(pinItems.size() == 0){
                     am.setRingerMode(2);
                 }else {
@@ -86,11 +88,14 @@ public class GpsService extends IntentService {
                         float dist = (float) (earthRadius * c);
 
 
+                        // distance from current position is less than range
+                        // enable silent mode
                         if (dist < range) {
                             // set silent mode
                             am.setRingerMode(0);
-                            break;
+                            break; // not need to loop through all pinItems
                         } else {
+                            // disable silent mode
                             am.setRingerMode(2);
                         }
                     }

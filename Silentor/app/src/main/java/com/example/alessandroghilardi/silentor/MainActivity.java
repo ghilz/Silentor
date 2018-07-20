@@ -26,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager n = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
+        // check permission for change notification
         if(!n.isNotificationPolicyAccessGranted()){
             Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
             startActivityForResult( intent, MainActivity.ON_DO_NOT_DISTURB_CALLBACK_CODE );
         }
 
+        // check permission to access location
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION )
                 != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(this,
@@ -38,20 +40,24 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.ON_DO_NOT_DISTURB_CALLBACK_CODE);
         }
 
+        // start service to keep checking my position
         startService(new Intent(this, GpsService.class));
     }
 
     public void openMap(View view){
+        // open map to add new pins
         Intent it = new Intent(this, MapsActivity.class);
         startActivity(it);
     }
 
     public void manageAllPin(View view){
+        // open activity to check and remove pins
         Intent it = new Intent(this, ManagerActivity.class);
         startActivity(it);
     }
 
     public void managerSettings(View view) {
+        // open activity to modify range settings
         Intent it = new Intent(this, ManagerSettingsActivity.class);
         startActivity(it);
     }

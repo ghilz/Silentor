@@ -47,6 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onLocationChanged(final Location location) {
 
+                // clean map to re-draw pins
                 mMap.clear();
 
                 LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
@@ -54,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MarkerOptions currentMarker  = new MarkerOptions();
                 currentMarker.position(currentPosition);
 
+                // draw current position pin
                 currentMarker.draggable(true);
                 currentMarker.icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
@@ -63,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
                 mMap.animateCamera(zoom);
 
+                // re-draw all pins
                 LoadMapPin();
             }
         };
@@ -97,6 +100,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             pinItems.addAll(dbHelper.getAllItems());
 
             for(int i = 0; i < pinItems.size(); i++){
+                // loop through all pinItems to draw map
 
                 LatLng marker = new LatLng(pinItems.get(i).getLatitude(), pinItems.get(i).getLongitude());
                 mMap.addMarker(new MarkerOptions().position(marker).title(pinItems.get(i).getName()));
@@ -108,12 +112,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
 
+            // draw stored pins on map
             LoadMapPin();
 
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
 
                 @Override
                 public void onMapClick(LatLng point) {
+                    // if map clicked open activity to edit pin
 
                     mMap.addMarker(new MarkerOptions().position(point).title("You tapped here"));
 
