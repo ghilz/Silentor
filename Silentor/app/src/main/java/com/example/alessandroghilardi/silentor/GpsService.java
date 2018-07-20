@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class GpsService extends IntentService {
+public class GpsService extends Service {
 
     private DatabaseHelper dbHelper;
     private ArrayList<PinItem> pinItems;
@@ -35,11 +35,9 @@ public class GpsService extends IntentService {
     @Override
     public IBinder onBind(Intent intent) { return null; }
 
-    @Override
-    public void onHandleIntent(Intent intent){}
 
     public GpsService(){
-        super("SilentorGPS");
+        super();
     }
 
     private final LocationListener mLocationListener = new LocationListener() {
@@ -141,7 +139,7 @@ public class GpsService extends IntentService {
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
 
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
 }
